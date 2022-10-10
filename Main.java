@@ -1,6 +1,7 @@
 import java.util.Scanner;
 public class Main
 {
+    static String[] operations = {"+", "-", "/", "*"};
     static String[] numbersA = {"1","2","3","4","5","6","7","8","9","10"};
     static String[] numbersR1 = {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
     static String[] numbersR2 = {"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
@@ -60,6 +61,7 @@ public class Main
         final String[] elements = inputStrCheck.split(" ");
         int countArab = 0;
         int countRim = 0;
+        boolean isCorrect = false;
         try {
             if (elements.length != 3){
                 throw new Exception("формат математической операции не удовлетворяет заданию");
@@ -68,17 +70,25 @@ public class Main
             System.out.println(e.getMessage());
             System.exit(0);
         }
-
+        for (String oper : operations) {
+            if (oper.equals(elements[1])) {
+                isCorrect = true;
+                break;
+            }
+        }
         for (int i = 0; i < 10; i++) {
             if (elements[0].equals(numbersA[i]) || elements[2].equals(numbersA[i])) countArab++;
             else if (elements[0].equals(numbersR1[i]) || elements[2].equals(numbersR1[i])) countRim++;
         }
 
         try {
-            if (countRim <= 1 && countArab <= 1) {
+            if (!isCorrect) {
                 throw new Exception("формат математической операции не удовлетворяет заданию");
             }
-            if (countArab >= 1 && countRim >= 1) {
+            if (countRim < 1 && countArab < 1) {
+                throw new Exception("формат математической операции не удовлетворяет заданию");
+            }
+            if (countArab == 1 && countRim == 1) {
                 throw new Exception("используются одновременно разные системы счисления ");
             }
             isArab = countArab >= 1;
